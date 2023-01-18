@@ -29,7 +29,16 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/profile'), IsGranted('ROLE_USER')]
 class UserController extends AbstractController
 {
-    #[Route('/edit', methods: ['GET', 'POST'], name: 'user_edit')]
+
+    #[Route('/', name: 'user_index', methods: ['GET'])]
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'user' => $this->getUser(),
+        ]);
+    }
+
+    #[Route('/edit', name: 'user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -51,7 +60,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/change-password', methods: ['GET', 'POST'], name: 'user_change_password')]
+    #[Route('/change-password', name: 'user_change_password', methods: ['GET', 'POST'])]
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();

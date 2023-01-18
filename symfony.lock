@@ -540,6 +540,9 @@
     "symfony/yaml": {
         "version": "v6.0.0"
     },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.13.0"
+    },
     "tgalopin/html-sanitizer": {
         "version": "1.4.0"
     },

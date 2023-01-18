@@ -12,6 +12,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,6 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -68,6 +70,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="json")
      */
     private array $roles = [];
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isVerified = false;
 
     public function getId(): ?int
     {
@@ -134,6 +141,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return void
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
@@ -164,15 +175,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return array
+     */
     public function __serialize(): array
     {
         // add $this->salt too if you don't use Bcrypt or Argon2i
         return [$this->id, $this->username, $this->password];
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public function __unserialize(array $data): void
     {
         // add $this->salt too if you don't use Bcrypt or Argon2i
         [$this->id, $this->username, $this->password] = $data;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 }
