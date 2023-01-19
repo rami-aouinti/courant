@@ -13,6 +13,7 @@ namespace App\Controller;
 
 use App\Form\Type\ChangePasswordType;
 use App\Form\UserType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,7 +40,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/edit', name: 'user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         $user = $this->getUser();
 
@@ -47,6 +48,10 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $avatarImage = $form->get('avatar')->getData();
+            if ($avatarImage) {
+                $user->setAvatar($fileUploader->upload($avatarImage));
+            }
             $entityManager->flush();
 
             $this->addFlash('success', 'user.updated_successfully');

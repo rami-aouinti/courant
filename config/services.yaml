@@ -8,7 +8,11 @@ parameters:
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: ar|en|fr|de|es|cs|nl|ru|uk|ro|pt_BR|pl|it|ja|id|ca|sl|hr|zh_CN|bg|tr|lt|bs|sr_Cyrl|sr_Latn
     app.notifications.email_sender: anonymous@example.com
-
+    avatar_directory: '%kernel.project_dir%/public/uploads/user/avatar'
+    brochures_directory: '%kernel.project_dir%/public/uploads/projects/files'
+    logo_projects: '%kernel.project_dir%/public/uploads/projects/logo'
+    profile_image: '%kernel.project_dir%/public/uploads/profile/image'
+    resume_directory: '%kernel.project_dir%/public/uploads/resumes'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -33,6 +37,24 @@ services:
     # 'arguments' key and define the arguments just below the service class
     App\EventSubscriber\CommentNotificationSubscriber:
         $sender: '%app.notifications.email_sender%'
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%avatar_directory%'
+
+    Site.Configuration:
+        class: App\Service\Config
+        public: true
+
+    monolog.db_handler:
+        class: App\Util\MonologDBHandler
+        arguments: [ '@doctrine.orm.entity_manager' ]
+
+    User.Notification:
+        class: App\Service\Notification
+        public: true
+
+    Qipsius\TCPDFBundle\Controller\TCPDFController: '@qipsius.tcpdf'
 
 when@test:
     services:

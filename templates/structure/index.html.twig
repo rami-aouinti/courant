@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Structure index{% endblock %}
+
+{% block body %}
+    <h1>Structure index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for structure in structures %}
+            <tr>
+                <td>{{ structure.id }}</td>
+                <td>{{ structure.name }}</td>
+                <td>{{ structure.description }}</td>
+                <td>{{ structure.createdAt ? structure.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ structure.updatedAt ? structure.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('structure_show', {'id': structure.id}) }}">show</a>
+                    <a href="{{ path('structure_edit', {'id': structure.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('structure_new') }}">Create new</a>
+{% endblock %}

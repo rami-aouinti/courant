@@ -12,13 +12,18 @@
 namespace App\DataFixtures;
 
 use App\Entity\Comment;
+use App\Entity\EventType;
 use App\Entity\Post;
+use App\Entity\QuizCategory;
+use App\Entity\QuizQuestion;
+use App\Entity\QuizResponse;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 use function Symfony\Component\String\u;
 
 class AppFixtures extends Fixture
@@ -34,6 +39,19 @@ class AppFixtures extends Fixture
         $this->loadUsers($manager);
         $this->loadTags($manager);
         $this->loadPosts($manager);
+        $this->loadQuiz($manager);
+        for ($j = 1; $j <= 5; $j++) {
+            $eventType = new EventType();
+            $eventType->setName('Meeting');
+            $eventType->setBorderColor('red');
+            $eventType->setBackgroundColor('blue');
+            $eventType->setTextColor('green');
+            $eventType->setCreatedAt(new \DateTime('now'));
+            $eventType->setUpdatedAt(new \DateTime('now'));
+
+            $manager->persist($eventType);
+        }
+        $manager->flush();
     }
 
     private function loadUsers(ObjectManager $manager): void
@@ -234,5 +252,64 @@ class AppFixtures extends Fixture
         $selectedTags = \array_slice($tagNames, 0, random_int(2, 4));
 
         return array_map(function ($tagName) { return $this->getReference('tag-'.$tagName); }, $selectedTags);
+    }
+
+    private function loadQuiz(ObjectManager $manager)
+    {
+        for( $i = 0; $i < 3; $i++) {
+            $category = new QuizCategory();
+            $category->setName("category $i");
+            $category->setCreatedAt(new \DateTime('now'));
+            $category->setUpdatedAt(new \DateTime('now'));
+
+            for($j = 0; $j < 10; $j ++) {
+                $question = new QuizQuestion();
+                $question->setQuestion("This is Question $i $j");
+                $question->setLevel(1);
+                $question->setCreatedAt(new \DateTime('now'));
+                $question->setUpdatedAt(new \DateTime('now'));
+                for($k = 0; $k < 4; $k++) {
+                    $answer = new QuizResponse();
+                    $answer->setResponse("Response number $k to question number $j ");
+                    $answer->setExacte(false);
+                    $answer->setQuizquestion($question);
+                    $answer->setCreatedAt(new \DateTime('now'));
+                    $answer->setUpdatedAt(new \DateTime('now'));
+                    $manager->persist($answer);
+                }
+
+                $manager->persist($question);
+            }
+            $manager->persist($category);
+        }
+        for( $i = 0; $i < 3; $i++) {
+            $category = new QuizCategory();
+            $category->setName("category $i");
+            $category->setCreatedAt(new \DateTime('now'));
+            $category->setUpdatedAt(new \DateTime('now'));
+
+            for($j = 0; $j < 10; $j ++) {
+                $question = new QuizQuestion();
+                $question->setQuestion("This is Question $i $j");
+                $question->setLevel(1);
+                $question->setCreatedAt(new \DateTime('now'));
+                $question->setUpdatedAt(new \DateTime('now'));
+
+                for($k = 0; $k < 4; $k++) {
+                    $answer = new QuizResponse();
+                    $answer->setResponse("Response number $k to question number $j ");
+                    $answer->setExacte(false);
+                    $answer->setQuizquestion($question);
+                    $answer->setCreatedAt(new \DateTime('now'));
+                    $answer->setUpdatedAt(new \DateTime('now'));
+                    $manager->persist($answer);
+                }
+
+                $manager->persist($question);
+            }
+            $manager->persist($category);
+        }
+
+        $manager->flush();
     }
 }

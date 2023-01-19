@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resume index{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-7 mb-4">
+            {{ include('resume/components/education.html.twig') }}
+            {{ include('resume/components/experience.html.twig') }}
+            {{ include('resume/components/project.html.twig') }}
+        </div>
+        <div class="col-md-5 mb-4">
+            {{ include('resume/components/skill.html.twig') }}
+            {{ include('resume/components/language.html.twig') }}
+            {{ include('resume/components/hobby.html.twig') }}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-auto">
+                <button class="btn btn-icon btn-2 btn-success" type="button">
+                    <span class="btn-inner--icon"><i class="material-icons">save</i></span>
+                </button>
+            </div>
+            <div class="col-md-auto">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#choiceModal" class="btn btn-icon btn-2 btn-warning" >
+                    <span class="btn-inner--icon"><i class="material-icons">save_alt</i></span>
+                </button>
+                {{ include('resume/components/choice_template.html.twig') }}
+            </div>
+            <div class="col-md-auto">
+                <button class="btn btn-icon btn-2 btn-primary" type="button">
+                    <span class="btn-inner--icon"><i class="material-icons">visibility</i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function newSkill() {
+            let url = `/skill/new`
+            let donnees = {
+                "name": document.getElementById("skillForm").elements["name"].value,
+                "level": document.getElementById("skillForm").elements["level"].value
+            }
+            let xhr = new XMLHttpRequest
+
+            let levelValue = document.getElementById("skillForm").elements["level"].value;
+            let level = parseInt(levelValue.substring(0, 2));
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    successSwal('Saved Bro');
+                    $("div.accordion-collapse-skill").collapse("hide");
+                    $( "skill" )
+                        .append(
+                            "<div class='row'>" +
+                            "<div class='col-md-4'>" + document.getElementById("skillForm").elements["name"].value + "</div>" +
+                            "<div class='col-md-4'>" +
+                            "<div class='progress-wrapper'>" + "<div class='progress-info'>" + "<span class='progress-percentage'>" + "<span class='text-sm font-weight-normal'>" + document.getElementById("skillForm").elements["level"].value + "</span>" + "</div>" + "<div class='progress'>" +
+                            "<div class='progress-bar bg-gradient-primary' role='progressbar' aria-valuenow='" + level   + "aria-valuemin=0' aria-valuemax='100' style='width: " + level + "%;'>" +  "</div>" + "</div>" +
+                            "</div>" + "</div>" +
+                            "<div class='col-md-2'>" + "<button class='btn btn-icon btn-warning btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>edit</i></span> </button>" + "</div>" +
+                            "<div class='col-md-2'>" + "<button class='btn btn-icon btn-danger btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>delete</i></span> </button>" + "</div>" +
+                            "</div>" );
+                    document.getElementById("skillForm").reset();
+                }
+                else {
+                    successSwal('Not Saved Bro');
+                }
+            };
+            xhr.open("POST", url)
+            xhr.send(JSON.stringify(donnees))
+        }
+
+        function newHobby() {
+            let url = `/hobby/new`
+            let donnees = {
+                "name": document.getElementById("hobbyForm").elements["name"].value
+            }
+            let xhr = new XMLHttpRequest
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    successSwal('Saved Bro');
+                    $("div.accordion-collapse-hobby").collapse("hide");
+                    $( "hobby" )
+                        .append(
+                            "<div class='row'>" +
+                            "<div class='col-md-8'>" + document.getElementById("hobbyForm").elements["name"].value + "</div>" +
+                            "<div class='col-md-2'>" + "<button class='btn btn-icon btn-warning btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>edit</i></span> </button>" + "</div>" +
+                            "<div class='col-md-2'>" + "<button class='btn btn-icon btn-danger btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>delete</i></span> </button>" + "</div>" +
+                            "</div>" );
+                    document.getElementById("hobbyForm").reset();
+                }
+                else {
+                    successSwal('Not Saved Bro');
+                }
+            };
+            xhr.open("POST", url)
+            xhr.send(JSON.stringify(donnees))
+        }
+
+        function newProject() {
+            let url = `/work/new`
+            let donnees = {
+                "name": document.getElementById("projectForm").elements["name"].value,
+                "description": document.getElementById("projectForm").elements["description"].value,
+                "repository": document.getElementById("projectForm").elements["repository"].value,
+                "startDate": document.getElementById("projectForm").elements["startDate"].value,
+                "endDate": document.getElementById("projectForm").elements["endDate"].value
+            }
+            let xhr = new XMLHttpRequest
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    successSwal('Saved Bro');
+                    $("div.accordion-collapse-project").collapse("hide");
+                    $( "project" )
+                        .append(
+                            "<div class='row'>" +
+                            "<div class='col-md-4'>" + document.getElementById("projectForm").elements["name"].value + "</div>" +
+                            "<div class='col-md-6'>" + document.getElementById("projectForm").elements["repository"].value + "</div>" +
+                            "<div class='col-md-1'>" + "<button class='btn btn-icon btn-warning btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>edit</i></span> </button>" + "</div>" +
+                            "<div class='col-md-1'>" + "<button class='btn btn-icon btn-danger btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>delete</i></span> </button>" + "</div>" +
+                            "</div>" );
+                    document.getElementById("projectForm").reset();
+                }
+                else {
+                    successSwal('Not Saved Bro');
+                }
+            };
+            xhr.open("POST", url)
+            xhr.send(JSON.stringify(donnees))
+        }
+
+        function newLanguage() {
+            let url = `/language/new`
+            let donnees = {
+                "name": document.getElementById("languageForm").elements["name"].value,
+                "level": document.getElementById("languageForm").elements["level"].value
+            }
+            let xhr = new XMLHttpRequest
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    successSwal('Saved Bro');
+                    $("div.accordion-collapse-language").collapse("hide");
+                    $( "language" )
+                        .append(
+                            "<div class='row'>" +
+                            "<div class='col-md-4'>" + document.getElementById("languageForm").elements["name"].value + "</div>" +
+                            "<div class='col-md-4'>" + document.getElementById("languageForm").elements["level"].value + "</div>" +
+                            "<div class='col-md-2'>" + "<button class='btn btn-icon btn-warning btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>edit</i></span> </button>" + "</div>" +
+                            "<div class='col-md-2'>" + "<button class='btn btn-icon btn-danger btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>delete</i></span> </button>" + "</div>" +
+                            "</div>" );
+                    document.getElementById("languageForm").reset();
+                }
+                else {
+                    successSwal('Not Saved Bro');
+                }
+            };
+            xhr.open("POST", url)
+            xhr.send(JSON.stringify(donnees))
+        }
+
+        function newExperience() {
+            let url = `/experience/new`
+            let donnees = {
+                "company": document.getElementById("experienceForm").elements["company"].value,
+                "title": document.getElementById("experienceForm").elements["title"].value,
+                "description": document.getElementById("experienceForm").elements["description"].value,
+                "startDate": document.getElementById("experienceForm").elements["startDate"].value,
+                "endDate": document.getElementById("experienceForm").elements["endDate"].value
+            }
+            let xhr = new XMLHttpRequest
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    successSwal('Saved Bro');
+                    $("div.accordion-collapse-experience").collapse("hide");
+                    $( "experience" )
+                        .append(
+                            "<div class='row'>" +
+                            "<div class='col-md-4'>" + document.getElementById("experienceForm").elements["title"].value + "by" + "</div>" +
+                            "<div class='col-md-6'>" + document.getElementById("experienceForm").elements["company"].value + "</div>" +
+                            "<div class='col-md-1'>" + "<button class='btn btn-icon btn-warning btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>edit</i></span> </button>" + "</div>" +
+                            "<div class='col-md-1'>" + "<button class='btn btn-icon btn-danger btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>delete</i></span> </button>" + "</div>" +
+                            "</div>" );
+                    document.getElementById("experienceForm").reset();
+                }
+                else {
+                    successSwal('Not Saved Bro');
+                }
+            };
+            xhr.open("POST", url)
+            xhr.send(JSON.stringify(donnees))
+        }
+
+        function newEducation() {
+            let url = `/education/new`
+            let donnees = {
+                "school": document.getElementById("educationForm").elements["school"].value,
+                "grad": document.getElementById("educationForm").elements["grad"].value,
+                "description": document.getElementById("educationForm").elements["description"].value,
+                "startDate": document.getElementById("educationForm").elements["startDate"].value,
+                "endDate": document.getElementById("educationForm").elements["endDate"].value
+            }
+            let xhr = new XMLHttpRequest
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    successSwal('Saved Bro');
+                    $("div.accordion-collapse-education").collapse("hide");
+                    $( "education" )
+                        .append(
+                            "<div class='row'>" +
+                            "<div class='col-md-4'>" + document.getElementById("educationForm").elements["school"].value + "</div>" +
+                            "<div class='col-md-6'>" + document.getElementById("educationForm").elements["grad"].value + "</div>" +
+                            "<div class='col-md-1'>" + "<button class='btn btn-icon btn-warning btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>edit</i></span> </button>" + "</div>" +
+                            "<div class='col-md-1'>" + "<button class='btn btn-icon btn-danger btn-sm' type='button'> <span class='btn-inner--icon'><i class='material-icons'>delete</i></span> </button>" + "</div>" +
+                            "</div>" );
+                    document.getElementById("educationForm").reset();
+                }
+                else {
+                    successSwal('Not Saved Bro');
+                }
+            };
+            xhr.open("POST", url)
+            xhr.send(JSON.stringify(donnees))
+        }
+    </script>
+{% endblock %}

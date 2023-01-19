@@ -1,0 +1,88 @@
+<div class="col-md-12 mb-4">
+    <div class="card shadow-lg">
+        <span class="badge rounded-pill bg-light text-dark w-30 mt-n2 mx-auto">Experiences</span>
+        <div class="card-header text-center pt-4 pb-3">
+            <h1 class="font-weight-bold mt-2">
+            </h1>
+        </div>
+        <div class="card-body text-lg-start text-center pt-0">
+            <div class="accordion-item mb-3">
+                <h5 class="accordion-header" id="headingOne">
+                    <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#experience" aria-expanded="false" aria-controls="experience">
+                        Add New Experience
+                        <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                        <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                </h5>
+                <div id="experience" class="accordion-collapse-experience collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
+                    <form id="experienceForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" name="company" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" name="title" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label>Start</label>
+                                    <input type="datetime-local" name="startDate" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label>End</label>
+                                    <input type="datetime-local" name="endDate" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-auto">
+                                <button type="button" onclick="newExperience()" class="btn btn-icon bg-gradient-primary mt-3 mb-0">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% for experience in experiences %}
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ experience.startDate|date('m-Y') }} - {{ experience.endDate|date('m-Y') }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ experience.title }} By {{ experience.company }}
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-icon btn-warning btn-sm" type="button">
+                            <span class="btn-inner--icon"><i class="material-icons">edit</i></span>
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-icon btn-danger btn-sm" type="button">
+                            <span class="btn-inner--icon"><i class="material-icons">delete</i></span>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+            <experience></experience>
+        </div>
+    </div>
+</div>

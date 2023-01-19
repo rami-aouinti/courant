@@ -1,0 +1,55 @@
+<div class="col-md-12 mb-4">
+    <div class="card bg-gradient-dark shadow-lg">
+        <span class="badge rounded-pill bg-primary w-30 mt-n2 mx-auto">Hobbies</span>
+        <div class="card-header text-center pt-4 pb-3 bg-transparent">
+            <h1 class="font-weight-bold mt-2 text-white">
+            </h1>
+        </div>
+        <div class="card-body text-lg-start text-center pt-0">
+            <div class="accordion-item mb-3">
+                <h5 class="accordion-header" id="headingOne">
+                    <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#hobby" aria-expanded="false" aria-controls="hobby">
+                        Add New Hobby
+                        <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                        <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                </h5>
+                <div id="hobby" class="accordion-collapse-hobby collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
+                    <form id="hobbyForm">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label">Hobby</label>
+                                    <input type="text" name="name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" onclick="newHobby()" class="btn btn-icon bg-gradient-primary mt-3 mb-0">
+                                    <span class="btn-inner--icon"><i class="material-icons">add</i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% for hobby in hobbies %}
+                <div class="row">
+                    <div class="col-md-8">
+                        {{ hobby.name }}
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-icon btn-warning btn-sm" type="button">
+                            <span class="btn-inner--icon"><i class="material-icons">edit</i></span>
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-icon btn-danger btn-sm" type="button">
+                            <span class="btn-inner--icon"><i class="material-icons">delete</i></span>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+            <hobby></hobby>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Place index{% endblock %}
+
+{% block body %}
+    <h1>Place index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>City</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for place in places %}
+            <tr>
+                <td>{{ place.id }}</td>
+                <td>{{ place.country }}</td>
+                <td>{{ place.state }}</td>
+                <td>{{ place.city }}</td>
+                <td>{{ place.createdAt ? place.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ place.updatedAt ? place.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('place_show', {'id': place.id}) }}">show</a>
+                    <a href="{{ path('place_edit', {'id': place.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('place_new') }}">Create new</a>
+{% endblock %}
