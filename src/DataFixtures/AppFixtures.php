@@ -12,6 +12,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Comment;
+use App\Entity\Config;
 use App\Entity\EventType;
 use App\Entity\Post;
 use App\Entity\QuizCategory;
@@ -66,6 +67,14 @@ class AppFixtures extends Fixture
 
             $manager->persist($user);
             $this->addReference($username, $user);
+
+            $config = new Config();
+            $config->setSiteName('Courant Democrate');
+            $config->setFilter('orange');
+            $config->setBackground('black');
+
+            $config->setUser($user);
+            $manager->persist($config);
         }
 
         $manager->flush();

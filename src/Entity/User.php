@@ -184,6 +184,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $scores;
 
     /**
+     * @ORM\OneToMany(targetEntity=Config::class, mappedBy="user")
+     */
+    private $config;
+
+    /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user")
      */
     private $products;
@@ -195,6 +200,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->messages = new ArrayCollection();
         $this->education = new ArrayCollection();
         $this->skills = new ArrayCollection();
+        $this->config = new ArrayCollection();
         $this->works = new ArrayCollection();
         $this->experiences = new ArrayCollection();
         $this->languages = new ArrayCollection();
@@ -894,5 +900,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->username;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getConfig(): Collection
+    {
+        return $this->config;
+    }
+
+    public function addConfig(Config $config): self
+    {
+        if (!$this->config->contains($config)) {
+            $this->config[] = $config;
+            $config->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConfig(Config $config): self
+    {
+        if ($this->config->removeElement($config)) {
+            // set the owning side to null (unless already changed)
+            if ($config->getUser() === $this) {
+                $config->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

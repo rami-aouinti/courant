@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Config{% endblock %}
+
+{% block body %}
+    <h1>Config</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ config.id }}</td>
+            </tr>
+            <tr>
+                <th>SiteName</th>
+                <td>{{ config.siteName }}</td>
+            </tr>
+            <tr>
+                <th>Filter</th>
+                <td>{{ config.filter }}</td>
+            </tr>
+            <tr>
+                <th>Background</th>
+                <td>{{ config.background }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ config.image }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_config_index') }}">back to list</a>
+
+    <a href="{{ path('app_config_edit', {'id': config.id}) }}">edit</a>
+
+    {{ include('config/_delete_form.html.twig') }}
+{% endblock %}

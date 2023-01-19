@@ -13,6 +13,7 @@ parameters:
     logo_projects: '%kernel.project_dir%/public/uploads/projects/logo'
     profile_image: '%kernel.project_dir%/public/uploads/profile/image'
     resume_directory: '%kernel.project_dir%/public/uploads/resumes'
+
 services:
     # default configuration for services in *this* file
     _defaults:

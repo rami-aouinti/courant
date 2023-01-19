@@ -1,4 +1,22 @@
-<div class="sidebar" data-color="orange" data-background-color="transparent" data-image="../assets/img/sidebar-1.jpg">
+{% if app.user and Menus.collection().config.filter is defined and Menus.collection().config.filter != "" %}
+    {% set siteColor = Menus.collection().config.filter %}
+{% else %}
+    {% set siteColor = "orange" %}
+{% endif %}
+
+{% if app.user and Menus.collection().config.background is defined and Menus.collection().config.background != "" %}
+    {% set background = Menus.collection().config.background %}
+{% else %}
+    {% set background = "black" %}
+{% endif %}
+
+{% if app.user and Menus.collection().config.image is defined and Menus.collection().config.image != "" %}
+    {% set image = Menus.collection().config.image %}
+{% else %}
+    {% set image = "material-dashboard/assets/img/sidebar-1.jpg" %}
+{% endif %}
+
+<div class="sidebar" data-color="{{ siteColor }}" data-background-color="{{ background }}" data-image="{{ asset(image) }}">
     <!--
       Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -8,22 +26,26 @@
             CD
         </a>
         <a href="{{ path('blog_index') }}" class="simple-text logo-normal">
-            Courant Democrat
+            {% if app.user %}
+                {{ Menus.collection().config.siteName }}
+            {% else %}
+                Site Name
+            {% endif %}
         </a></div>
     <div class="sidebar-wrapper">
         {% if app.user %}
             {% include ('profile/user_sidbar.html.twig') %}
         {% endif %}
         <ul class="nav">
-            <li class="nav-item active ">
+            <li class="nav-item {% if app.request.get('_route') == 'blog_index' %} active"{% endif %}">
                 <a class="nav-link" href="{{ path('blog_index') }}">
                     <i class="material-icons">dashboard</i>
                     <p> News </p>
                 </a>
             </li>
             {% for menu in Menus.collection().menus %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
+                <li class="nav-item {% if app.request.get('_route') == menu.path %} active"{% endif %}">
+                    <a class="nav-link" href="{{ path(menu.path) }}">
                         <i class="material-icons">{{ menu.material }}</i>
                         <p> {{ menu.name }} </p>
                     </a>

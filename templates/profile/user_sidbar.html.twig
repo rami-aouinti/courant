@@ -11,19 +11,19 @@
         </a>
         <div class="collapse" id="collapseExample">
             <ul class="nav">
-                <li class="nav-item">
+                <li class="nav-item {% if app.request.get('_route') == 'user_index' %} active"{% endif %} ">
                     <a class="nav-link" href="{{ path('user_index') }}">
                         <span class="sidebar-mini"> MP </span>
                         <span class="sidebar-normal"> My Profile </span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% if app.request.get('_route') == 'user_edit' %} active"{% endif %} ">
                     <a class="nav-link" href="{{ path('user_edit') }}">
                         <span class="sidebar-mini"> EP </span>
                         <span class="sidebar-normal"> Edit Profile </span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% if app.request.get('_route') == 'blog_index' %} active"{% endif %} ">
                     <a class="nav-link" href="#">
                         <span class="sidebar-mini"> S </span>
                         <span class="sidebar-normal"> Settings </span>
